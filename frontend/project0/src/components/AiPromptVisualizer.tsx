@@ -23,7 +23,7 @@ const AiPromptVisualizer: React.FC<AiPromptVisualizerProps> = ({ project }) => {
       try {
 
         setIsLoading(true);
-        const response = await axios.post('http://localhost:3000/api/turntoprompt', {
+        const response = await axios.post('https://devmatrix-9cm0.onrender.com/api/turntoprompt', {
           projectData: project
         });
         console.log(prompt);

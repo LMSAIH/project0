@@ -23,7 +23,7 @@ const MainPage: React.FC = () => {
 
     try {
       
-      const response = await axios.post('http://localhost:3000/api/getprojectinfo', {
+      const response = await axios.post('https://devmatrix-9cm0.onrender.com/0/api/getprojectinfo', {
         message: projectDescription
       });
 
