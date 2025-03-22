@@ -13,31 +13,26 @@ interface TimelineProps {
 
 const Timeline: React.FC<TimelineProps> = ({ steps }) => {
   return (
-    <div className="py-10 px-5 max-w-3xl mx-auto">
+    <div className="backdrop-blur-sm bg-slate-800/50 p-6 rounded-2xl border border-purple-500/30 shadow-lg shadow-purple-500/20">
+      <h2 className="text-2xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-purple-400">Project Timeline</h2>
       <div className="relative">
-        {/* Timeline line */}
-        <div className="absolute left-1/2 h-full w-0.5 bg-blue-500 transform -translate-x-1/2"></div>
+        {/* Vertical line */}
+        <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-gradient-to-b from-cyan-500 via-purple-500 to-pink-500"></div>
         
-        {steps.map((step, index) => (
-          <div 
-            key={step.id}
-            className={`flex ${index % 2 === 0 ? 'justify-start' : 'justify-end'} py-10 relative`}
-          >
-            {/* Timeline ball */}
-            <div className="absolute left-1/2 w-6 h-6 bg-blue-500 rounded-full transform -translate-x-1/2 z-10 transition-all duration-300 hover:scale-110 hover:shadow-blue-300 hover:shadow-lg"></div>
-            
-            {/* Content */}
-            <div className={`w-[45%] relative bg-white p-5 rounded-lg shadow-md
-              ${index % 2 === 0 ? 'mr-[50%]' : 'ml-[50%]'}
-              before:content-[''] before:absolute before:top-1/2 before:w-5 before:h-5 before:bg-white before:transform before:-translate-y-1/2 before:rotate-45
-              ${index % 2 === 0 ? 'before:right-[-10px]' : 'before:left-[-10px]'}`}
-            >
-              <h3 className="text-blue-500 font-semibold mb-2">{step.title}</h3>
-              <span className="text-sm text-gray-600 block mb-2">{step.date}</span>
-              <p className="text-gray-700">{step.description}</p>
+        <div className="space-y-8">
+          {steps.map((step) => (
+            <div key={step.id} className="relative pl-12">
+              {/* Circle marker */}
+              <div className="absolute left-2 w-4 h-4 rounded-full bg-gradient-to-r from-cyan-400 to-purple-400 transform -translate-x-1/2 mt-1.5"></div>
+              
+              <div className="backdrop-blur-sm bg-slate-800/30 p-4 rounded-lg border border-purple-500/20">
+                <div className="text-sm text-cyan-300 mb-1">{step.date}</div>
+                <h3 className="text-lg font-semibold text-purple-300 mb-2">{step.title}</h3>
+                <p className="text-gray-300/80">{step.description}</p>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );

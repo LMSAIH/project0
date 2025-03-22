@@ -1,13 +1,21 @@
 import React, { useState } from 'react';
 import { FaRocket, FaCode, FaBrain, FaSpinner } from 'react-icons/fa';
+import axios from 'axios';
 import { Project } from '../types/project';
-import axios from "axios"
+import ColorSchemaList from './ColorSchemaList';
+import FontsList from './FontsList';
+import AdditionalNotes from './AdditionalNotes';
+import YAMLViewer from './YAMLViewer';
+import TechStack from './TechStack';
+import Timeline from './Timeline';
 
-const MainPage: React.FC = () => {
+const TestPage: React.FC = () => {
   const [projectDescription, setProjectDescription] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [projectInfo, setProjectInfo] = useState<Project>();
   const [error, setError] = useState<string | null>(null);
+
+  // Sample YAML content for demonstration
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,15 +29,25 @@ const MainPage: React.FC = () => {
     setIsLoading(true);
     
     try {
-      const response = await axios.post('/api/getprojectinfo')
-      if (!response.ok) {
-        throw new Error('Failed to get project information');
-      }
+      const { data } = await axios.post<Project>(
+        'http://localhost:3000/api/getprojectinfo',
+        { message: projectDescription },
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+
+      console.log(data)
       
-      const data = await response.data
       setProjectInfo(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An unknown error occurred');
+      if (axios.isAxiosError(err)) {
+        setError(err.response?.data?.message || err.message);
+      } else {
+        setError('An unknown error occurred');
+      }
     } finally {
       setIsLoading(false);
     }
@@ -37,7 +55,6 @@ const MainPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white">
-
       <div className="fixed inset-0 bg-grid-pattern opacity-10 pointer-events-none"></div>
       
       <header className="container mx-auto pt-8 pb-12">
@@ -52,7 +69,7 @@ const MainPage: React.FC = () => {
       </header>
 
       <main className="container mx-auto px-4 pb-16">
-        <div className="max-w-4xl mx-auto backdrop-blur-sm bg-slate-800/50 p-6 md:p-10 rounded-2xl border border-purple-500/30 shadow-lg shadow-purple-500/20">
+        <div className="max-w-7xl mx-auto backdrop-blur-sm bg-slate-800/50 p-6 md:p-10 rounded-2xl border border-purple-500/30 shadow-lg shadow-purple-500/20">
           
           <div className="flex flex-wrap -mx-4 mb-10">
             <div className="w-full md:w-1/3 px-4 mb-6 md:mb-0">
@@ -118,54 +135,52 @@ const MainPage: React.FC = () => {
           </form>
           
           {projectInfo && !isLoading && (
-            <div className="mt-10 p-6 rounded-lg bg-slate-800/80 border border-cyan-500/30 shadow-inner shadow-purple-900/30">
-              <h2 className="text-2xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-purple-400">
-                {projectInfo.project_name || 'Your Project Blueprint'}
-              </h2>
-              
-              <div className="prose prose-invert max-w-none">
-                <div className="mb-6">
-                  <h3 className="text-xl font-medium text-purple-300 mb-2">Main Features</h3>
-                  <ul className="list-disc pl-5 space-y-1">
-                    {projectInfo.main_features?.map((feature: unknown, index: number) => (
-                      <li key={index}>{typeof feature === 'string' ? feature : feature.name}</li>
-                    ))}
-                  </ul>
-                </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <h3 className="text-xl font-medium text-cyan-300 mb-2">Tech Stack</h3>
-                    <ul className="list-disc pl-5 space-y-1">
-                      {Array.isArray(projectInfo.tech_stack) && projectInfo.tech_stack.map((tech: unknown, index: number) => (
-                        <li key={index}>{typeof tech === 'string' ? tech : tech.name || tech.technology}</li>
-                      ))}
-                    </ul>
-                  </div>
-                  
-                  <div>
-                    <h3 className="text-xl font-medium text-pink-300 mb-2">Timeline</h3>
-                    <p>{typeof projectInfo.estimated_timeline === 'string' 
-                        ? projectInfo.estimated_timeline 
-                        : Array.isArray(projectInfo.estimated_timeline) 
-                          ? `${projectInfo.estimated_timeline[0]?.time || '8-12'} weeks` 
-                          : '8-12 weeks'}</p>
-                  </div>
-                </div>
-                
-                <div className="mt-6 text-center">
-                  <button className="px-6 py-2 bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white font-medium rounded-lg shadow-md shadow-purple-500/20 transform hover:-translate-y-1 transition-all duration-200">
-                    View Full Blueprint
-                  </button>
+            <div className="space-y-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <YAMLViewer
+                  content={JSON.stringify(projectInfo.api_reference, null, 2)}
+                  title="API Reference"
+                />
+                <Timeline 
+                  steps={projectInfo.to_do_list.map((step, index) => ({
+                    id: index + 1,
+                    title: `Step ${index + 1}`,
+                    description: step,
+                    date: `Phase ${index + 1}`
+                  }))}
+                />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <TechStack
+                  technologies={projectInfo.tech_stack.map((tech, index) => ({
+                    id: index + 1,
+                    name: tech.name,
+                    description: tech.description,
+                    imageUrl: tech.imageUrl
+                  }))}
+                />
+                <div className="space-y-6">
+                  {projectInfo.Suggested_color_schema && (
+                    <ColorSchemaList colors={projectInfo.Suggested_color_schema} />
+                  )}
+                  {projectInfo.Fonts_to_use && (
+                    <FontsList fonts={projectInfo.Fonts_to_use} />
+                  )}
                 </div>
               </div>
+
+              {projectInfo.additional_notes && (
+                <div className="col-span-full">
+                  <AdditionalNotes notes={projectInfo.additional_notes} />
+                </div>
+              )}
             </div>
           )}
         </div>
       </main>    
-     
     </div>
   );
 };
 
-export default MainPage;
+export default TestPage;

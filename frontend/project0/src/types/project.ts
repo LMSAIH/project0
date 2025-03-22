@@ -13,9 +13,10 @@ export interface TimelineItem {
 }
 
 export interface TechStackItem {
-  technology: string;
-  reason: string;
-  application: string;
+    id: number;
+    name: string;
+    description: string;
+    imageUrl: string;
 }
 
 export interface Feature {
@@ -43,15 +44,7 @@ export interface ApiPath {
   };
 }
 
-export interface ApiReference {
-  openapi: string;
-  info: ApiInfo;
-  paths: {
-    [path: string]: {
-      [method: string]: ApiPath;
-    };
-  };
-}
+
 
 export interface AiTool {
   tool: string;
@@ -71,7 +64,7 @@ export interface Challenge {
 
 export interface ColorSchema {
   hex: string;
-  usage: string;
+  use: string;
 }
 
 export interface Project {
@@ -80,7 +73,7 @@ export interface Project {
   to_do_list: string[];
   tech_stack: TechStackItem[];
   main_features: Feature[];
-  api_reference: ApiReference;
+  api_reference: string;
   ai_suggestions: AiTool[];
   estimated_timeline: TimelineEstimate[];
   potential_challenges: Challenge[];
