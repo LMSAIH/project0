@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ColorSchema } from '../types/project';
 
 interface ColorSchemaListProps {
@@ -6,23 +6,35 @@ interface ColorSchemaListProps {
 }
 
 const ColorSchemaList: React.FC<ColorSchemaListProps> = ({ colors }) => {
+  const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
+
+  const handleCopyColor = (hex: string, index: number) => {
+    navigator.clipboard.writeText(hex);
+    setCopiedIndex(index);
+    setTimeout(() => setCopiedIndex(null), 2000);
+  };
+
   return (
     <div className="backdrop-blur-sm bg-slate-800/50 p-6 rounded-2xl border border-purple-500/30 shadow-lg shadow-purple-500/20">
       <h2 className="text-2xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-purple-400">Color Schema</h2>
-      <ul className="space-y-4">
+      <div className="flex flex-row w-full h-[120px]">
         {colors.map((color, index) => (
-          <li key={index} className="flex items-center gap-4">
+          <div key={index} className="flex-1">
             <div 
-              className="w-12 h-12 rounded-lg shadow-md border border-purple-500/30"
+              onClick={() => handleCopyColor(color.hex, index)}
+              className="h-full relative cursor-pointer transition-transform hover:scale-[1.02] active:scale-[0.98]"
               style={{ backgroundColor: color.hex }}
-            />
-            <div>
-              <p className="font-mono text-sm text-cyan-300">{color.hex}</p>
-              <p className="text-gray-300/80">{color.usage}</p>
+            >
+              <div className="absolute bottom-0 left-0 right-0 p-2 bg-black/20 backdrop-blur-[2px] text-center">
+                <p className="font-mono text-xs font-bold text-white/90 uppercase tracking-wider mb-1">
+                  {copiedIndex === index ? 'Copied!' : color.hex}
+                </p>
+                <p className="text-white/80 text-xs truncate px-1">{color.use}</p>
+              </div>
             </div>
-          </li>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 };
