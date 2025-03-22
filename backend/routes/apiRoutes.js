@@ -27,7 +27,7 @@ router.post('/getprojectinfo', async (req, res) => {
       - project_name: A suggested name for the project
       - user_journey: An array in order with a detailed explanation of how the user will interact with the project, competitors and potential project value considering the different implications that the project has. 
       - to_do_list: An array of things that need to be done in order to develop the project, consider that you should think out of the planning stage and focus on the actual implementation as you are already providing the plan.
-      - tech_stack: An array of recommended technologies that fit the project description and achieve the best results. Each suggestion should be an object and include why this is relevant and how it will be applied
+      - tech_stack: An array of recommended technologies that fit the project description and achieve the best results. Each suggestion should be an object and include why this is relevant and how it will be applied, include a url to the image of the technology.
       - main_features: An array of key features, with their explanation and a bigger vision of why they exist in the project
       - api_reference: A yaml file that includes the different endpoints that will be used for the application and how they will come into play with the architecture, fit for OPENAPI 3.0.3
       - ai_suggestions: An order array that suggest different AI tools that could help implement this project and will save up time. Include the reason why you chose them and a link to them, don't include models, I want specific tools.
