@@ -1,61 +1,127 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const OpenAI = require('openai');
-require('dotenv').config();
+const OpenAI = require("openai");
+require("dotenv").config();
 
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
+  apiKey: process.env.OPENAI_API_KEY,
 });
 
-router.get('/', (req, res) => {
+router.get("/", (req, res) => {
   res.json({
-    message: 'Hello World'
+    message: "Hello World",
   });
 });
 
-router.post('/getprojectinfo', async (req, res) => {
-
+router.post("/getprojectinfo", async (req, res) => {
   try {
     const { message } = req.body;
-    
+
     if (!message) {
-      return res.status(400).json({ error: 'Message is required' });
+      return res.status(400).json({ error: "Message is required" });
     }
-    
+
     const prompt = `
-      Please analyze the following project description and return a structured JSON object with:
-      - project_name: A suggested name for the project
-      - user_journey: An array in order with a detailed explanation of how the user will interact with the project, competitors and potential project value considering the different implications that the project has. 
-      - to_do_list: An array of things that need to be done in order to develop the project, consider that you should think out of the planning stage and focus on the actual implementation as you are already providing the plan.
-      - tech_stack: An array of recommended technologies that fit the project description and achieve the best results. Each suggestion should be an object and include why this is relevant and how it will be applied, include a url to the image of the technology.
-      - main_features: An array of key features, with their explanation and a bigger vision of why they exist in the project
-      - api_reference: A yaml file that includes the different endpoints that will be used for the application and how they will come into play with the architecture, fit for OPENAPI 3.0.3
-      - ai_suggestions: An order array that suggest different AI tools that could help implement this project and will save up time. Include the reason why you chose them and a link to them, don't include models, I want specific tools.
-      - estimated_timeline: Ann array of estimations in weeks of how long it will take to complete the project, considering at least 5 scenarios, where more people are involved per each scenario and the time dedicated is different
-      - potential_challenges: An array of potential challenges and a roadmap of how to solve them
-      - Suggested color schema: An array of hex codes with suggested colors that give good contrast and are visually appealing, also include where they should be used.
-      - Fonts to use: An array of fonts that will fit the project, google fonts. 
-      - additional_notes: Any additional notes that could be helpful for the project
-       Project description: ${message}
-    `;
+    Analyze this project description and return a precise, structured JSON object with these fields:
+  
+    1. project_name: String - A concise, memorable name for the project (max 3 words)
+    
+    2. user_journey: Array<String> - Sequential steps of user interaction, with each string structured as:
+       "Step X: [Action] - [Benefit] | Competitors: [Alternative solutions] | Value: [Unique advantages]"
+    
+    3. to_do_list: Array<String> - Implementation tasks (not planning), formatted as:
+       "[Task Category] - [Specific action item] (Priority: High/Medium/Low)"
+    
+    4. tech_stack: Array<Object> - Each technology recommendation as:
+       {
+         "name": "Technology name",
+         "reason": "Specific justification with technical advantages",
+         "imageLink": "URL to official logo (preferably SVG)",
+         "link": "URL to official documentation"
+       }
+    
+    5. main_features: Array<Object> - Essential functionality descriptions:
+       {
+         "feature": "Feature name (noun phrase)",
+         "explanation": "Technical implementation details and user benefits",
+         "vision": "Long-term strategic importance and evolution potential"
+       }
+    
+    6. api_reference: String - Complete OpenAPI 3.0.3 specification in YAML format with:
+       - All endpoints grouped by resource
+       - Request/response schemas
+       - Authentication requirements
+       - Status codes and error handling
+    
+    7. ai_suggestions: Array<Object> - Specific AI tools (not models) to accelerate development:
+       {
+         "name": "Tool name (commercial product)",
+         "reason": "Specific implementation advantages and time savings",
+         "link": "Direct URL to tool's official site"
+       }
+    
+    8. estimated_timeline: Array<Object> - Five scenarios with varied team sizes and time commitments:
+       {
+         "scenario": "Scenario description (e.g., 'Solo developer, part-time')",
+         "team_size": Number (team members),
+         "commitment": String (hours per week),
+         "duration": String (estimated weeks),
+         "milestones": Array<String> (key delivery points with timeframes)
+       }
+    
+    9. potential_challenges: Array<Object> - Anticipated problems and solutions:
+       {
+         "challenge": "Specific technical or business obstacle",
+         "impact": "Severity assessment (High/Medium/Low)",
+         "solution": "Detailed mitigation strategy with specific tools or approaches",
+         "contingency": "Backup plan if primary solution fails"
+       }
+    
+    10. suggested_color_schema: Array<Object> - Color palette with specific usage contexts:
+        {
+          "hex": "#RRGGBB format",
+          "name": "Color name (e.g., 'Primary Blue')",
+          "usage": "Specific UI element or context",
+          "accessibility": "WCAG compliance level (AA or AAA)"
+        }
+    
+    11. fonts: Array<Object> - Typography recommendations:
+        {
+          "name": "Font family name",
+          "type": "Display/Body/Monospace/etc.",
+          "url": "Google Fonts direct URL",
+          "pairings": "Suggested combinations or fallbacks"
+        }
+    
+    12. additional_notes: Array<String> - Implementation insights, each focusing on one specific aspect
+  
+    Carefully analyze this project description: ${message}
+    
+    Ensure all responses follow the exact formats specified above. Be technically precise and provide actionable, implementation-focused information rather than general advice.
+  `;
 
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",
       messages: [
-        { role: "system", content: "You are a helpful assistant that analyzes project descriptions and provides structured information in JSON format, you will create a project outline and explain the steps to follow for the implementation. You are a senior software architect that makes the best choices and provides the best possible advice." },
-        { role: "user", content: prompt }
+        {
+          role: "system",
+          content:
+            "You are a helpful assistant that analyzes project descriptions and provides structured information in JSON format, you will create a project outline and explain the steps to follow for the implementation. You are a senior software architect that makes the best choices and provides the best possible advice.",
+        },
+        { role: "user", content: prompt },
       ],
-      response_format: { type: "json_object" }
+      response_format: { type: "json_object" },
     });
 
     const response = JSON.parse(completion.choices[0].message.content);
-    
+
     res.json(response);
   } catch (error) {
-    console.error('Error calling OpenAI API:', error);
-    res.status(500).json({ 
-      error: 'Failed to process request',
-      details: process.env.NODE_ENV === 'development' ? error.message : undefined
+    console.error("Error calling OpenAI API:", error);
+    res.status(500).json({
+      error: "Failed to process request",
+      details:
+        process.env.NODE_ENV === "development" ? error.message : undefined,
     });
   }
 });
