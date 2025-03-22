@@ -36,7 +36,7 @@ router.post("/getprojectinfo", async (req, res) => {
        {
          "name": "Technology name",
          "reason": "Specific justification with technical advantages",
-         "imageLink": "URL to official logo (preferably SVG)",
+         "imageLink": "URL to official logo as an svg",
          "link": "URL to official documentation"
        }
     
