@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FaRocket, FaCode, FaBrain, FaSpinner } from 'react-icons/fa';
 import axios from 'axios';
-import { Project } from '../types/project';
+import { Project, TimelineItem } from '../types/project';
 import ColorSchemaList from './ColorSchemaList';
 import FontsList from './FontsList';
 import AdditionalNotes from './AdditionalNotes';
@@ -12,10 +12,8 @@ import Timeline from './Timeline';
 const TestPage: React.FC = () => {
   const [projectDescription, setProjectDescription] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [projectInfo, setProjectInfo] = useState<Project>();
+  const [projectInfo, setProjectInfo] = useState<Project | null>(null);
   const [error, setError] = useState<string | null>(null);
-
-  // Sample YAML content for demonstration
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,8 +36,6 @@ const TestPage: React.FC = () => {
           }
         }
       );
-
-      console.log(data)
       
       setProjectInfo(data);
     } catch (err) {
@@ -51,6 +47,15 @@ const TestPage: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const formatTimelineSteps = (todoList: string[]): TimelineItem[] => {
+    return todoList.map((step, index) => ({
+      id: index + 1,
+      title: `Phase ${index + 1}`,
+      description: step,
+      date: `Step ${index + 1}`
+    }));
   };
 
   return (
@@ -141,25 +146,11 @@ const TestPage: React.FC = () => {
                   content={JSON.stringify(projectInfo.api_reference, null, 2)}
                   title="API Reference"
                 />
-                <Timeline 
-                  steps={projectInfo.to_do_list.map((step, index) => ({
-                    id: index + 1,
-                    title: `Step ${index + 1}`,
-                    description: step,
-                    date: `Phase ${index + 1}`
-                  }))}
-                />
+                <Timeline steps={formatTimelineSteps(projectInfo.to_do_list)} />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <TechStack
-                  technologies={projectInfo.tech_stack.map((tech, index) => ({
-                    id: index + 1,
-                    name: tech.name,
-                    description: tech.description,
-                    imageUrl: tech.imageUrl
-                  }))}
-                />
+                <TechStack technologies={projectInfo.tech_stack} />
                 <div className="space-y-6">
                   {projectInfo.Suggested_color_schema && (
                     <ColorSchemaList colors={projectInfo.Suggested_color_schema} />
