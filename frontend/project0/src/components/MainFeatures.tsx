@@ -65,14 +65,14 @@ const MainFeatures: React.FC<MainFeaturesProps> = ({ features }) => {
                   scale: 1.03, 
                   boxShadow: '0 20px 25px -5px rgba(139, 92, 246, 0.15)' 
                 }}
-                className="h-full bg-slate-800/50 rounded-2xl backdrop-blur-md  border border-purple-500/30 overflow-hidden shadow-lg shadow-purple-500/10 flex flex-col"
+                className="h-full rounded-2xl backdrop-blur-md  border-2 bg-slate-800/50 border-purple-500/30 overflow-hidden shadow-lg shadow-purple-500/10 flex flex-col"
               >
                 {/* Feature header with gradient background */}
                 <div className="relative p-6 ">
                   <div className="absolute top-0 left-0 w-full h-full  opacity-10"></div>
                   
                   <div className="flex items-center justify-between mb-3 ">
-                    <div className="w-12 h-12 rounded-lg flex items-center justify-center">
+                    <div className="w-12 h-12 rounded-lg flex items-center justify-center ">
                       {getFeatureIcon(feature.feature)}
                     </div>
                     
