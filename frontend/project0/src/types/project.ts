@@ -88,9 +88,3 @@ export interface Project {
   Fonts_to_use: string[];
   additional_notes: string;
 }
-
-// Example usage:
-// const start: Project = {
-//   project_name: "Hackathon Hub",
-//   to_do_list: ["Define project scope", "Setup development environment"]
-// }; 
