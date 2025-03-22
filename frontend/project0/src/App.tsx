@@ -1,8 +1,5 @@
 import { useState } from 'react'
 import { Project } from './types/project'
-import StepByStep from './components/StepByStep'
-import FeatureList from './components/FeatureList'
-import InfoContainer from './components/InfoContainer'
 
 function App() {
   const [project] = useState<Project>({
