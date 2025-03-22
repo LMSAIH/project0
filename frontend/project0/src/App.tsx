@@ -1,5 +1,8 @@
 import { useState } from 'react'
 import { Project } from './types/project'
+import StepByStep from './components/StepByStep'
+import FeatureList from './components/FeatureList'
+import InfoContainer from './components/InfoContainer'
 
 function App() {
   const [project] = useState<Project>({
@@ -84,6 +87,27 @@ function App() {
           <h1 className="text-3xl font-bold text-gray-900">{project.project_name}</h1>
         </div>
       </header>
+
+      <main className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        <div className="grid gap-8">
+          <StepByStep 
+            items={project.to_do_list} 
+            title="Project Steps"
+          />
+          
+          <FeatureList 
+            features={project.main_features} 
+            title="Main Features"
+          />
+          
+          <InfoContainer 
+            challenges={project.potential_challenges}
+            colorSchema={project.Suggested_color_schema}
+            fonts={project.Fonts_to_use}
+            notes={project.additional_notes}
+          />
+        </div>
+      </main>
     </div>
   );
 }

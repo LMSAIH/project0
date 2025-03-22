@@ -1,11 +1,5 @@
 import React from 'react';
-
-interface Technology {
-  id: number;
-  name: string;
-  imageUrl: string;
-  description: string;
-}
+import { Technology } from "../types/project";
 
 interface TechStackProps {
   technologies: Technology[];
