@@ -28,9 +28,10 @@ const MainPage: React.FC = () => {
       });
 
       const data = response.data;
+
       setProjectInfo(data);
       console.log(data);
-
+      console.log(JSON.stringify(data, null, 2));
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An unknown error occurred');
       console.log(err);

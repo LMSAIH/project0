@@ -9,6 +9,7 @@ import ColorSchemaList from './ColorSchemaList';
 import YAMLViewer from './YAMLViewer';
 import AdditionalNotes from './AdditionalNotes';
 import CodeNotesPreview from './CodeNotesPreview';
+import AiPromptVisualizer from './AiPromptVisualizer';
 import { Project } from '../types/project';
 
 interface ProjectVisualiserProps {
@@ -36,6 +37,8 @@ const ProjectVisualiser: React.FC<ProjectVisualiserProps> = ({ project }) => {
             <ColorSchemaList colors={project.suggested_color_schema}/>
 
             <CodeNotesPreview colors={project.suggested_color_schema} fonts={project.fonts} />
+
+            <AiPromptVisualizer project={project} />
 
             <AdditionalNotes notes={project.additional_notes}/>
 

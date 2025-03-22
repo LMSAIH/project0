@@ -126,4 +126,66 @@ router.post("/getprojectinfo", async (req, res) => {
   }
 });
 
+router.post('/turntoprompt', async (req, res) => {  
+    try {
+      const { projectData } = req.body;
+      
+      if (!projectData) {
+        return res.status(400).json({ error: "Project data is required in the request body" });
+      }
+      
+      const systemPrompt = `
+        You are an expert software developer assistant that converts structured project data into 
+        detailed natural language prompts for AI code generation tools. Your responses should be 
+        comprehensive instructions that an AI can use to implement the described project.
+      `;
+      
+      // Convert the JSON data to a string for the prompt
+      const jsonString = JSON.stringify(projectData, null, 2);
+      
+      const userPrompt = `
+        Convert the following project specification JSON into a detailed, well-structured natural 
+        language prompt that could be given to an AI coding assistant like GitHub Copilot or 
+        similar tools that can manipulate IDEs.
+        
+        The prompt should:
+        1. Start with a clear high-level description of the project
+        2. Include specific implementation instructions for each feature
+        3. Reference the appropriate technologies from the tech stack
+        4. Mention important architectural considerations
+        5. Include any styling requirements based on the color schema and fonts
+        6. Address potential challenges and their solutions
+        7. Be organized in a logical sequence that a developer would follow
+        8. Use markdown formatting for better readability
+        
+        Here's the project specification:
+        ${jsonString}
+        
+        Return ONLY the natural language prompt without any additional explanations or meta-commentary.
+      `;
+      
+      const completion = await openai.chat.completions.create({
+        model: "gpt-4o-mini", 
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: userPrompt }
+        ],
+        temperature: 0.7,
+        max_tokens: 4000,
+      });
+      
+      const naturalLanguagePrompt = completion.choices[0].message.content.trim();
+      
+      res.json({ 
+        prompt: naturalLanguagePrompt,
+      });
+      
+    } catch (error) {
+      console.error("Error generating natural language prompt:", error);
+      res.status(500).json({
+        error: "Failed to generate natural language prompt",
+        details: process.env.NODE_ENV === "development" ? error.message : undefined
+      });
+    }
+  });
 module.exports = router;
