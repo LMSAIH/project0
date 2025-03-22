@@ -1,22 +1,11 @@
-export interface Technology {
-  id: number;
-  name: string;
-  description: string;
-  imageUrl: string;
-}
-
-export interface TimelineItem {
-  id: number;
-  title: string;
-  date: string;
-  description: string;
-}
-
-export interface TechStackItem {
-    id: number;
-    name: string;
-    description: string;
-    imageUrl: string;
+import { Technology } from "../components/TechStack";
+import { Font } from "../components/FontsList";
+export interface TimelineScenario {
+  scenario: string;
+  team_size: number;
+  commitment: string;
+  duration: string;
+  milestones: string[];
 }
 
 export interface Feature {
@@ -52,9 +41,11 @@ export interface AiTool {
   link: string;
 }
 
-export interface TimelineEstimate {
-  scenario: string;
-  estimate: string;
+export interface TimelineStep {
+  id: number;
+  title: string;
+  description: string;
+  date: string;
 }
 
 export interface Challenge {
@@ -71,13 +62,13 @@ export interface Project {
   project_name: string;
   user_journey: string[];
   to_do_list: string[];
-  tech_stack: TechStackItem[];
+  tech_stack: Technology[];
   main_features: Feature[];
   api_reference: string;
   ai_suggestions: AiTool[];
-  estimated_timeline: TimelineEstimate[];
+  estimated_timeline: TimelineScenario[];
   potential_challenges: Challenge[];
-  Suggested_color_schema: ColorSchema[];
-  Fonts_to_use: string[];
+  suggested_color_schema: ColorSchema[];
+  fonts: Font[];
   additional_notes: string;
 }

@@ -1,12 +1,8 @@
 import React, { useState } from 'react';
 import { FaRocket, FaCode, FaBrain, FaSpinner } from 'react-icons/fa';
-<<<<<<< HEAD
-import { Project } from '../types/project';
-import axios from "axios"
-=======
 import axios from 'axios';
 import ProjectVisualiser from './ProjectVisualiser';
->>>>>>> c4c3d3ccba8473dd9925fbf75a4b00147728c00f
+import { Project } from '../types/project';
 
 const MainPage: React.FC = () => {
   const [projectDescription, setProjectDescription] = useState('');
@@ -26,20 +22,12 @@ const MainPage: React.FC = () => {
     setIsLoading(true);
 
     try {
-<<<<<<< HEAD
-      const response = await axios.post('/api/getprojectinfo')
-      if (!response.ok) {
-        throw new Error('Failed to get project information');
-      }
       
-      const data = await response.data
-=======
       const response = await axios.post('http://localhost:3000/api/getprojectinfo', {
         message: projectDescription
       });
 
       const data = response.data;
->>>>>>> c4c3d3ccba8473dd9925fbf75a4b00147728c00f
       setProjectInfo(data);
       console.log(data);
 
@@ -133,54 +121,6 @@ const MainPage: React.FC = () => {
               </button>
             </div>
           </form>
-<<<<<<< HEAD
-          
-          {projectInfo && !isLoading && (
-            <div className="mt-10 p-6 rounded-lg bg-slate-800/80 border border-cyan-500/30 shadow-inner shadow-purple-900/30">
-              <h2 className="text-2xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-purple-400">
-                {projectInfo.project_name || 'Your Project Blueprint'}
-              </h2>
-              
-              <div className="prose prose-invert max-w-none">
-                <div className="mb-6">
-                  <h3 className="text-xl font-medium text-purple-300 mb-2">Main Features</h3>
-                  <ul className="list-disc pl-5 space-y-1">
-                    {projectInfo.main_features?.map((feature: unknown, index: number) => (
-                      <li key={index}>{typeof feature === 'string' ? feature : feature.name}</li>
-                    ))}
-                  </ul>
-                </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <h3 className="text-xl font-medium text-cyan-300 mb-2">Tech Stack</h3>
-                    <ul className="list-disc pl-5 space-y-1">
-                      {Array.isArray(projectInfo.tech_stack) && projectInfo.tech_stack.map((tech: unknown, index: number) => (
-                        <li key={index}>{typeof tech === 'string' ? tech : tech.name || tech.technology}</li>
-                      ))}
-                    </ul>
-                  </div>
-                  
-                  <div>
-                    <h3 className="text-xl font-medium text-pink-300 mb-2">Timeline</h3>
-                    <p>{typeof projectInfo.estimated_timeline === 'string' 
-                        ? projectInfo.estimated_timeline 
-                        : Array.isArray(projectInfo.estimated_timeline) 
-                          ? `${projectInfo.estimated_timeline[0]?.time || '8-12'} weeks` 
-                          : '8-12 weeks'}</p>
-                  </div>
-                </div>
-                
-                <div className="mt-6 text-center">
-                  <button className="px-6 py-2 bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white font-medium rounded-lg shadow-md shadow-purple-500/20 transform hover:-translate-y-1 transition-all duration-200">
-                    View Full Blueprint
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
-=======
->>>>>>> c4c3d3ccba8473dd9925fbf75a4b00147728c00f
         </div>
       </main>
 
