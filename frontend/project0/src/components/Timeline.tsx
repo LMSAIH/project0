@@ -58,7 +58,7 @@ const Timeline: React.FC<TimelineProps> = ({ steps }) => {
         <div className="flex overflow-x-auto pb-2 justify-start md:justify-center gap-4 mb-12 hide-scrollbar">
           {uniqueSteps.map((scenario, index) => (
             <button
-              key={index}
+              key={`${index}-${scenario.team_size}`}
               onClick={() => setActiveScenario(index)}
               className={`px-4 py-3 rounded-lg backdrop-blur-sm transition-all duration-300 flex items-center gap-2 flex-shrink-0 ${
                 activeScenario === index 

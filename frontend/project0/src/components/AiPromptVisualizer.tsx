@@ -26,6 +26,7 @@ const AiPromptVisualizer: React.FC<AiPromptVisualizerProps> = ({ project }) => {
         const response = await axios.post('http://localhost:3000/api/turntoprompt', {
           projectData: project
         });
+        console.log(prompt);
 
         setPrompt(response.data.prompt);
         setEditedPrompt(response.data.prompt);
