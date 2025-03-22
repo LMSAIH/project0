@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import TestPage from './components/TestPage';
+import MainPage from './components/MainPage';
 
 
 
@@ -12,7 +13,7 @@ export default function App() {
           <Routes>
             <Route
               path="/"
-              element={<TestPage />}
+              element={<MainPage />}
             />
             <Route path="*" element={<div>404 page not found.</div>} />
           </Routes>

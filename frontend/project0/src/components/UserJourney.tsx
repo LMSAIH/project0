@@ -34,7 +34,7 @@ const UserJourney: React.FC<UserJourneyProps> = ({ journey }) => {
   return (
     <div className="py-12 px-4">
       <div className="max-w-6xl mx-auto">
-        <h2 className="text-3xl font-bold mb-10 text-center bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-purple-400">
+        <h2 className="text-3xl font-bold mb-20 text-center bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-purple-400">
           User Journey
         </h2>
         
@@ -50,12 +50,12 @@ const UserJourney: React.FC<UserJourneyProps> = ({ journey }) => {
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.2 }}
-                className={`relative flex flex-col sm:flex-row mb-16 last:mb-0 ${
+                className={`relative flex flex-col sm:flex-row mb-16 last:mb-0  ${
                   index % 2 === 0 ? 'sm:flex-row-reverse' : ''
                 }`}
               >
 
-                <div className="absolute left-0 sm:left-1/2 transform sm:-translate-x-1/2 -top-2 w-16 h-16 rounded-full bg-gradient-to-br from-cyan-500 to-purple-600 flex items-center justify-center border-4 border-slate-900 shadow-lg shadow-purple-500/30 z-10">
+                <div className="absolute left-0 -top-10 sm:left-1/2 transform sm:-translate-x-1/2 -top-2 w-16 h-16 rounded-full bg-gradient-to-br from-cyan-500 to-purple-600 flex items-center justify-center border-4 border-slate-900 shadow-lg shadow-purple-500/30 z-10">
                   <div className="text-white text-2xl">
                     {stepIcons[index] || number}
                   </div>
