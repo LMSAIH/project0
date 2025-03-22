@@ -24,7 +24,7 @@ const Timeline: React.FC<TimelineProps> = ({ steps }) => {
       }
       return acc;
     }, [])
-    .sort((a, b) => a.team_size - b.team_size); // Sort by team size in ascending order
+    .sort((a, b) => a.team_size - b.team_size); 
   
   const [activeScenario, setActiveScenario] = useState<number>(0);
 
@@ -32,7 +32,6 @@ const Timeline: React.FC<TimelineProps> = ({ steps }) => {
     return null;
   }
 
-  // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
     show: {

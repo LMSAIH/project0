@@ -33,8 +33,6 @@ export interface ApiPath {
   };
 }
 
-
-
 export interface AiTool {
   tool: string;
   reason: string;
@@ -54,8 +52,10 @@ export interface Challenge {
 }
 
 export interface ColorSchema {
+  accessibility: string;
   hex: string;
-  use: string;
+  name: string;
+  usage: string;
 }
 
 export interface Project {

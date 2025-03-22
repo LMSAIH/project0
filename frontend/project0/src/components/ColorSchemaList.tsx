@@ -15,7 +15,7 @@ const ColorSchemaList: React.FC<ColorSchemaListProps> = ({ colors }) => {
   };
 
   return (
-    <div className="backdrop-blur-sm bg-slate-800/50 p-6 rounded-2xl border border-purple-500/30 shadow-lg shadow-purple-500/20">
+    <div className="backdrop-blur-sm bg-slate-800/50 p-6 rounded-2xl border border-purple-500/30 shadow-lg shadow-purple-500/20 max-w-6xl mx-auto">
       <h2 className="text-2xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-purple-400">Color Schema</h2>
       <div className="flex flex-row w-full h-[120px]">
         {colors.map((color, index) => (
@@ -29,7 +29,9 @@ const ColorSchemaList: React.FC<ColorSchemaListProps> = ({ colors }) => {
                 <p className="font-mono text-xs font-bold text-white/90 uppercase tracking-wider mb-1">
                   {copiedIndex === index ? 'Copied!' : color.hex}
                 </p>
-                <p className="text-white/80 text-xs truncate px-1">{color.use}</p>
+                <p className="text-white/80 text-xs px-1">Accessibility: {color.accessibility}</p>
+                <p className="text-white/80 text-xs px-1">Usage: {color.usage}</p>  
+                
               </div>
             </div>
           </div>

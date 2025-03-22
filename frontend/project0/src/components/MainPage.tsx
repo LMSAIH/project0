@@ -41,7 +41,7 @@ const MainPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white py-10">
 
       <div className="fixed inset-0 bg-grid-pattern opacity-10 pointer-events-none"></div>
 

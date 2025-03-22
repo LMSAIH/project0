@@ -49,7 +49,7 @@ const YAMLViewer: React.FC<YAMLViewerProps> = ({ content, title = 'YAML Content'
   };
 
   return (
-    <div className="backdrop-blur-sm bg-slate-800/50 p-6 rounded-2xl border border-purple-500/30 shadow-lg shadow-purple-500/20">
+    <div className=" max-w-6xl mx-auto backdrop-blur-sm bg-slate-800/50 p-6 rounded-2xl border border-purple-500/30 shadow-lg shadow-purple-500/20">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-purple-400">
           {title}
